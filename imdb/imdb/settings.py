@@ -4,8 +4,8 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SYNOPSIS = os.path.abspath(BASE_DIR+"/../synopsis/")
-STORYLINE = os.path.abspath(BASE_DIR+"/../storyline/")
+SYNOPSIS = os.path.abspath(BASE_DIR+"/../../synopsis/")
+STORYLINE = os.path.abspath(BASE_DIR+"/../../storyline/")
 
 SECRET_KEY = 'rn-qzjz8gh4l@!_wc-5@($x@qo910p@-og2t@4udv#4i0#cb(s'
 
