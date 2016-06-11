@@ -5,7 +5,10 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SYNOPSIS = os.path.abspath(BASE_DIR+"/../../synopsis/")
+SYNOPSIS_INDEX = os.path.abspath(BASE_DIR+"/../../synopsis_index/")
+
 STORYLINE = os.path.abspath(BASE_DIR+"/../../storyline/")
+STORYLINE_INDEX = os.path.abspath(BASE_DIR+"/../../storyline_index/")
 
 SECRET_KEY = 'rn-qzjz8gh4l@!_wc-5@($x@qo910p@-og2t@4udv#4i0#cb(s'
 
@@ -17,7 +20,7 @@ DATABASE = {
     'ENGINE': "django.db.backends.mysql",
     'NAME': 'IMDB',
     'USER': 'root',
-    'PASSWORD': '',
+    'PASSWORD': '1234',
     'HOST': '127.0.0.1',
     'PORT': '3306',
     'ATOMIC_REQUESTS': True,

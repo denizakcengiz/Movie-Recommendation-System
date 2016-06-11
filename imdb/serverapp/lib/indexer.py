@@ -42,7 +42,7 @@ class IndexFiles(object):
 
         if not os.path.exists(storeDir):
             os.mkdir(storeDir)
-            
+
         analyzer = StandardAnalyzer(Version.LUCENE_CURRENT)
 
         store = SimpleFSDirectory(File(storeDir))
@@ -72,7 +72,9 @@ class IndexFiles(object):
         t2.setIndexed(True)
         t2.setStored(False)
         t2.setTokenized(True)
-        t2.setIndexOptions(FieldInfo.IndexOptions.DOCS_AND_FREQS_AND_POSITIONS)
+        t2.setIndexOptions(FieldInfo.IndexOptions.DOCS_AND_FREQS)
+        t2.setStoreTermVectors(True)
+        t2.setStoreTermVectorOffsets(True)
         
         for root, dirnames, filenames in os.walk(root):
             for filename in filenames:
