@@ -46,6 +46,7 @@ class Movie(models.Model):
 	def __unicode__(self):
 		return u"{0} ({1})".format(self.title, self.year)
 
+
 class MovieWriter(models.Model):
 	id = models.AutoField(primary_key=True)
 	movie = models.ForeignKey(Movie)
@@ -79,6 +80,21 @@ class MovieActor(models.Model):
 	def __unicode__(self):
 		return u"Movie: {0} Actor: {1}".format(self.movie.title, self.actor.name)
 
+class Similarities(models.Model):
+	id = models.AutoField(primary_key=True)
+	first_movie = models.ForeignKey(Movie, related_name='+')
+	second_movie = models.ForeignKey(Movie, related_name='+')
+	genre = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+	actor = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+	director = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+	synopsis = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+	storyline = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+
+	class Meta:
+		unique_together = ("first_movie", "second_movie")
+
+	def __unicode__(self):
+		return u"Movie1: {0} Movie2: {1}".format(self.movie1.title, self.movie2.title)
 
 
 
