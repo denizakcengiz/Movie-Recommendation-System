@@ -1,6 +1,7 @@
 import operator
 from serverapp.models import Movie, Similarities
 from django.db.models import Q
+import decimal
 
 class RecommendationUnit(object):
 
@@ -31,7 +32,7 @@ class RecommendationUnit(object):
 	def find_weighted_similarity_score(similarity, genre_weight=0, actor_weight=0, \
 		director_weight=0, synopsis_weight=0, storyline_weight=0):
 
-		return (similarity.genre * genre_weight) + (similarity.actor * actor_weight) + \
-		(similarity.director * director_weight) + (similarity.synopsis * synopsis_weight) + \
-		(similarity.storyline * storyline_weight)
+		return (similarity.genre * decimal.Decimal(genre_weight)) + (similarity.actor * decimal.Decimal(actor_weight)) + \
+		(similarity.director * decimal.Decimal(director_weight)) + (similarity.synopsis * decimal.Decimal(synopsis_weight)) + \
+		(similarity.storyline * decimal.Decimal(storyline_weight))
 
