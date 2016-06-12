@@ -21,4 +21,5 @@ class Command(BaseCommand):
 		option = int(options["option"][0])
 		index_dir = OPTION_MAP[option]
 
-		SearchFiles(query, index_dir)
+		searcher = SearchFiles(query)
+		searcher.search(index_dir)

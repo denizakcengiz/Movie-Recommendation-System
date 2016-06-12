@@ -19,12 +19,12 @@ FIELD_CONTENTS = "contents"
 FIELD_PATH = "name"
 
 class SearchFiles(object):
-	def __init__(self, query, index_dir):
-		self.search(query, index_dir)
+	def __init__(self, query, retrieve_count=5):
+		self.query = query
+		self.retrieve_count = retrieve_count
+		jvm = lucene.initVM(vmargs=['-Djava.awt.headless=true'])
 
-	def search(self, query, index_dir):
-		lucene.initVM(vmargs=['-Djava.awt.headless=true'])
-
+	def search(self, index_dir):
 		# Get handle to index directory
 		directory = SimpleFSDirectory(File(index_dir))
 
@@ -43,15 +43,16 @@ class SearchFiles(object):
 		queryParser = QueryParser(Version.LUCENE_CURRENT, FIELD_CONTENTS, analyzer)
 
 		# Create the query
-		query = queryParser.parse(query)
+		query = queryParser.parse(self.query)
 
 		# Run the query and get top 50 results
-		topDocs = searcher.search(query, 5)
+		topDocs = searcher.search(query, self.retrieve_count)
 
 		# Get top hits
 		scoreDocs = topDocs.scoreDocs
-		print "%s total matching documents." % len(scoreDocs)
 
+		doc_ids = []
 		for scoreDoc in scoreDocs:
 			doc = searcher.doc(scoreDoc.doc)
-			print doc.get(FIELD_PATH), scoreDoc.score
+			doc_ids.append(doc.get(FIELD_PATH))
+		return [int(item) for item in doc_ids]
