@@ -34,9 +34,11 @@ class ImdbSpider(scrapy.Spider):
 
 				crawled_title = response.css('h1::text').extract()[0].replace('\u00a0','')
 				crawled_year = response.css('#titleYear a::text').extract()[0]
+				crawled_rating = response.css('.ratingValue span[itemprop=ratingValue]::text').extract()[0]
 				movie, created = models.Movie.objects.get_or_create(
 					title=crawled_title,
 					year=crawled_year,
+					rating=crawled_rating,
 					director=director
 				)
 

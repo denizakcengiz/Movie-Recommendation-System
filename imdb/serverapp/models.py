@@ -34,6 +34,7 @@ class Movie(models.Model):
 	id = models.AutoField(primary_key=True)
 	title = models.CharField(max_length=255)
 	year = models.CharField(max_length=4)
+	rating = models.CharField(max_length=255, default="", null=True)
 	director = models.ForeignKey(Director)
 
 	writers = models.ManyToManyField(Writer, through="MovieWriter")
