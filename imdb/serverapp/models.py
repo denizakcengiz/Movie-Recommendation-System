@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
+from django.db.models import Sum
 
 class Writer(models.Model):
 	id = models.AutoField(primary_key=True)
@@ -96,6 +97,7 @@ class Similarities(models.Model):
 	director = models.DecimalField(max_digits=5, decimal_places=4, default=0)
 	synopsis = models.DecimalField(max_digits=5, decimal_places=4, default=0)
 	storyline = models.DecimalField(max_digits=5, decimal_places=4, default=0)
+	clicks = models.IntegerField(default=0)
 
 	class Meta:
 		unique_together = ("first_movie", "second_movie")
@@ -103,6 +105,13 @@ class Similarities(models.Model):
 	def __unicode__(self):
 		return u"Movie1: {0} Movie2: {1}".format(self.first_movie.title, self.second_movie.title)
 
+	@property
+	def total_clicks(self):
+		return Similarities.objects.all().aggregate(Sum('clicks'))['clicks__sum']
+
+	@property
+	def click_percentage(self):
+		return self.clicks/(float (self.total_clicks))
 
 
 
