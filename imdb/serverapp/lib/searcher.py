@@ -54,4 +54,4 @@ class SearchFiles(object):
 
 		for scoreDoc in scoreDocs:
 			doc = searcher.doc(scoreDoc.doc)
-			print doc.get(FIELD_PATH)
+			print doc.get(FIELD_PATH), scoreDoc.score

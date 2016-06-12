@@ -9,7 +9,6 @@ OPTION_MAP = {
 	2: settings.SYNOPSIS_INDEX
 }
 
-
 class Command(BaseCommand):
 	def add_arguments(self, parser):
 			parser.add_argument("query", type=str, nargs="+")
