@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 
-import scrapy, os, codecs
+import scrapy, os, codecs, urllib
 
 from functools import wraps
 from django.conf import settings
 from django.db import transaction
 from serverapp import models
 from scrapy.utils.python import get_func_args
-
 
 def callback_args(f):
     args = get_func_args(f)[2:]
@@ -59,6 +58,10 @@ class ImdbSpider(scrapy.Spider):
 		except Exception as e:
 			print "Error occured: {0}".format(e)
 			return
+
+		crawled_poster = sel.xpath("//div[@class='poster']/a/img/@src").extract()[0]
+		poster_file = os.path.join(settings.POSTERS, u"{0}.jpg".format(movie.id))
+		urllib.urlretrieve(crawled_poster, poster_file)
 
 		crawled_storyline = response.css('#titleStoryLine .inline[itemprop=description] p::text').extract()[0].strip()
 		storyline_file_path = os.path.join(settings.STORYLINE, "{0}".format(movie.id))

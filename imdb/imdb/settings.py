@@ -10,6 +10,8 @@ SYNOPSIS_INDEX = os.path.abspath(BASE_DIR+"/../../synopsis_index/")
 STORYLINE = os.path.abspath(BASE_DIR+"/../../storyline/")
 STORYLINE_INDEX = os.path.abspath(BASE_DIR+"/../../storyline_index/")
 
+POSTERS = os.path.abspath(BASE_DIR+"/../../posters/")
+
 SECRET_KEY = 'rn-qzjz8gh4l@!_wc-5@($x@qo910p@-og2t@4udv#4i0#cb(s'
 
 DEBUG = True

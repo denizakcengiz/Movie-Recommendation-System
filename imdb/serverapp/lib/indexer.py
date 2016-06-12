@@ -72,9 +72,7 @@ class IndexFiles(object):
         t2.setIndexed(True)
         t2.setStored(False)
         t2.setTokenized(True)
-        t2.setIndexOptions(FieldInfo.IndexOptions.DOCS_AND_FREQS)
-        t2.setStoreTermVectors(True)
-        t2.setStoreTermVectorOffsets(True)
+        t2.setIndexOptions(FieldInfo.IndexOptions.DOCS_AND_FREQS_AND_POSITIONS)
         
         for root, dirnames, filenames in os.walk(root):
             for filename in filenames:
