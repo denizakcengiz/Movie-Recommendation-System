@@ -1,148 +1,36 @@
-<!DOCTYPE HTML>
-<html lang="en">
-	<head>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+{% extends "serverapp/layout.html" %}
 
-		{% load staticfiles %}
-		<title>Ceng Movie Collection</title>
-
-		<script type="text/javascript" src="{% static 'serverapp/js/jquery-1.11.1.min.js' %}"></script>
-		<script type="text/javascript" src="{% static 'serverapp/js/login.js' %}"></script>
-		<script src="{% static 'serverapp/js/jquery.easydropdown.js' %}"></script>
-		<script src="{% static 'serverapp/js/wow.min.js' %}"></script>
-		<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-
-		<link href="{% static 'serverapp/css/app.css' %}" rel='stylesheet' type='text/css' />
-		<link href="{% static 'serverapp/css/bootstrap.css' %}" rel='stylesheet' type='text/css' />
-		<link href="{% static 'serverapp/css/style.css' %}" rel='stylesheet' type='text/css' />
-		<link href='//fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-		<link href="{% static 'serverapp/css/animate.css' %}" rel='stylesheet' type='text/css' />
-
-		<script>
-			new WOW().init();
-		</script>
-	</head>
-<body>
-	<div class="banner">
-		<div class="container_wrap">
-			<h1>What are you looking for?</h1>
-			<form action="{% url 'serverapp:search' %}" method="GET">
-				<input type="text" name="keyword" placeholder="type the keyword(s)">
-				<div class="contact_btn">
-				<label class="btn1 btn-2 btn-2g"><input name="submit" type="submit" id="submit" value="Search"></label>
+{% block content %}
+	{% for movie in movies %}
+	{% cycle "first" "" "last" as row silent %}
+		{% if row == "first" %}<div class="top_grid">{% endif %}
+			<div class="col-md-4 index-grids">
+				<a href="{% url 'serverapp:show' movie.id %}" style="cursor: pointer; text-decoration:none;">
+					<div class="grid1">
+						<div class="view view-first" style="background-color:white;">
+							<div class="col-md-12 clear-padding">
+								<div style="float:left;">
+									<div class="index_img">
+										<img src="{{ baseUrl }}serverapp/images/movies/{{movie.id}}.jpg" class="img-responsive" alt="">
+									</div>
+								</div>
+								<div style="float:left;">
+									<div class="sale">{{ movie.rating }} / 10</div>
+									<div class="inner_wrap3">
+										<h5 class="green">{{ movie.year }}</h5>
+										{% for genre in movie.genres.all %}
+											<h4 class="green">{{ genre.name }}</h4>
+										{% endfor %}
+									</div>
+								</div>
+							</div>
+						</div> 
+						<div class="inner_wrap">
+							<h4 class="green">{{ movie.title }}</h4>
+						</div>
+					</div>
 				</div>
-			</form>        		
-			<div class="clearfix"></div>
-		</div>
-	</div>
-	<div class="content_top">
-		<div class="container">
-			<div class="col-md-4 bottom_nav">
-				<div class="content_menu">
-					<ul>
-						<li class="active"><a href="#">Recommended</a></li> 
-						<li><a href="#">Latest</a></li> 
-						<li><a href="#">Highlights</a></li> 
-					</ul>
-				</div>
-			</div>
-			<div class="col-md-4 content_dropdown1">
-				<div class="content_dropdown">    
-					<select class="dropdown" tabindex="10" data-settings='{"wrapperClass":"metro"}'>
-						<option value="0">Dubai</option>	
-						<option value="1">tempor</option>
-						<option value="2">congue</option>
-						<option value="3">maxim </option>
-						<option value="4">mutationem</option>
-						<option value="5">hendrerit </option>
-						<option value="5"></option>
-						<option value="5"></option>
-					</select>
-				</div>
-				<div class="content_dropdown">    
-					<select class="dropdown" tabindex="10" data-settings='{"wrapperClass":"metro"}'>
-						<option value="0">Show Map</option>	
-						<option value="1">tempor</option>
-						<option value="2">congue</option>
-						<option value="3">maxim </option>
-						<option value="4">mutationem</option>
-						<option value="5">hendrerit </option>
-						<option value="5"></option>
-						<option value="5"></option>
-					</select>
-				</div>
-			</div>
-			<div class="col-md-4 filter_grid">
-				<ul class="filter">
-					<li class="fil">Filter :</li>
-					<li><a href=""> <i class="icon1"> </i> </a></li>
-					<li><a href=""> <i class="icon2"> </i> </a></li>
-					<li><a href=""> <i class="icon3"> </i> </a></li>
-					<li><a href=""> <i class="icon4"> </i> </a></li>
-					<li><a href=""> <i class="icon5"> </i> </a></li>
-				</ul>
-			</div>
-		</div>
-	</div>
-	<div class="content_middle">
-		<div class="container">
-			<div class="content_middle_box">
-				{% include "serverapp/movies.html" %}
-			</div>
-		</div>
-	</div>
-
-
-   <div class="footer">
-   	<div class="container">
-   	 <div class="footer_top">
-   	   <h3>Subscribe to our newsletter</h3>
-   	   <form>
-		<span>
-			<i><img src="images/mail.png" alt=""></i>
-		    <input type="text" value="Enter your email" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Enter your email';}">
-		    <label class="btn1 btn2 btn-2 btn-2g"> <input name="submit" type="submit" id="submit" value="Subscribe"> </label>
-		    <div class="clearfix"> </div>
-		</span>			 	    
-	   </form>
-	  </div>
-	  <div class="footer_grids">
-	     <div class="footer-grid">
-			<h4>Ipsum Quis</h4>
-			<ul class="list1">
-				<li><a href="contact.html">Contact</a></li>
-				<li><a href="#">Mirum est</a></li>
-				<li><a href="#">Placerat facer</a></li>
-				<li><a href="#">Claritatem</a></li>
-				<li><a href="#">Sollemnes </a></li>
-			</ul>
-		  </div>
-		  <div class="footer-grid">
-			<h4>Quis Ipsum</h4>
-			<ul class="list1">
-				<li><a href="#">Placerat facer</a></li>
-				<li><a href="#">Claritatem</a></li>
-				<li><a href="#">Sollemnes </a></li>
-				<li><a href="#">Claritas</a></li>
-				<li><a href="#">Mirum est</a></li>
-			</ul>
-		  </div>
-		  <div class="footer-grid last_grid">
-			<h4>Follow Us</h4>
-			<ul class="footer_social wow fadeInLeft" data-wow-delay="0.4s">
-			  <li><a href=""> <i class="fb"> </i> </a></li>
-			  <li><a href=""><i class="tw"> </i> </a></li>
-			  <li><a href=""><i class="google"> </i> </a></li>
-			  <li><a href=""><i class="u_tube"> </i> </a></li>
-		 	</ul>
-		 	<div class="copy wow fadeInRight" data-wow-delay="0.4s">
-              <p> &copy; 2016 Hotel Deluxe. All rights reserved | Design by <a href="http://w3layouts.com/">W3layouts</a></p>
-	        </div>
-		  </div>
-		  <div class="clearfix"> </div>
-	   </div>
-      </div>
-   </div>
-</body>
-</html>		
+			</a>
+		{% if row == "last" %}</div><div class="clearfix"></div><br>{% endif %}
+	{% endfor %}
+{% endblock %}

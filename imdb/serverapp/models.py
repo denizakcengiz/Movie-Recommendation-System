@@ -54,6 +54,9 @@ class Movie(models.Model):
 			similarity = Similarities.objects.get(second_movie=self, first_movie=movie)
 		return similarity
 
+	@property
+	def writer_names(self):
+		return ", ".join([writer.name for writer in self.writers.all()])
 
 class MovieWriter(models.Model):
 	id = models.AutoField(primary_key=True)

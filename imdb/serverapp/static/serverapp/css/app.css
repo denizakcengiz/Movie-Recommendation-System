@@ -6,3 +6,16 @@
 h5 {
 	font-size: 16px !important;
 }
+
+.disabled {
+   cursor: default;
+}
+
+.synopsis p{
+    line-height: 1.5em;
+    height: 3em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
+}

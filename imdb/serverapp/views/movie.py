@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os 
 
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -7,6 +8,7 @@ from django.views.decorators.http import require_GET, require_POST
 from serverapp import models
 from django.conf import settings
 from serverapp.lib.searcher import SearchFiles
+from serverapp.lib.recommendation import RecommendationUnit
 
 @require_GET
 def index(request):
@@ -31,5 +33,17 @@ def search(request):
 @require_GET
 def show(request, movie_id):
 	movie = models.Movie.objects.get(pk=movie_id)
-	return render(request, "serverapp/show.html", {"movie": movie})
+	storyline_path = os.path.join(settings.STORYLINE, "{0}".format(movie.id))
+	storyline = open(storyline_path).read()
+	synopsis_path = os.path.join(settings.SYNOPSIS, "{0}".format(movie.id))
+	synopsis = open(synopsis_path).read()
+	movie_ids, important_fields = RecommendationUnit.get_similar_movies(movie, 1, 1, 1, 1, 1, 1)
+	print "movie_ids: ", movie_ids
+	print "important_fields: ", important_fields
+	content = {
+		"movie": movie,
+		"storyline": storyline,
+		"synopsis": synopsis
+	}
+	return render(request, "serverapp/show.html", content)
 
