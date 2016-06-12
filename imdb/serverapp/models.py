@@ -47,6 +47,12 @@ class Movie(models.Model):
 	def __unicode__(self):
 		return u"{0} ({1})".format(self.title, self.year)
 
+	def get_similarity_with_movie(self, movie):
+		similarity = Similarities.objects.filter(first_movie=self, second_movie=movie).first()
+		if not similarity:
+			similarity = Similarities.objects.get(second_movie=self, first_movie=movie)
+		return similarity
+
 
 class MovieWriter(models.Model):
 	id = models.AutoField(primary_key=True)
@@ -95,7 +101,7 @@ class Similarities(models.Model):
 		unique_together = ("first_movie", "second_movie")
 
 	def __unicode__(self):
-		return u"Movie1: {0} Movie2: {1}".format(self.movie1.title, self.movie2.title)
+		return u"Movie1: {0} Movie2: {1}".format(self.first_movie.title, self.second_movie.title)
 
 
 
