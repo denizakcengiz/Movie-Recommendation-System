@@ -21,28 +21,17 @@
 			</div>
 		</div>
 		<div class=" single-profile">
-			<h4> Related Posts</h4>
-			<div class="single-left ">					
-				<div class="col-md-3 post-top">
-					<img class="img-responsive " src="images/s1.jpg" alt="">
-					<h6>Duis autem</h6>
-					<p>Lorem ipsum dolor sit amet.</p>
-				</div>
-				<div class="col-md-3 post-top">
-					<img class="img-responsive " src="images/s2.jpg" alt="">
-					<h6>Duis autem</h6>
-					<p>Lorem ipsum dolor sit amet.</p>
-				</div>
-				<div class="col-md-3 post-top">
-					<img class="img-responsive " src="images/s3.jpg" alt="">
-					<h6>Duis autem</h6>
-					<p>Lorem ipsum dolor sit amet.</p>
-				</div>
-				<div class="col-md-3 post-top">
-					<img class="img-responsive " src="images/s4.jpg" alt="">
-					<h6>Duis autem</h6>
-					<p>Lorem ipsum dolor sit amet.</p>
-				</div>
+			<h4>Related Movies</h4>
+			<div class="single-left ">		
+				{% for recommended_movie in recommended_movies %}	
+					<a href="{% url 'serverapp:show' recommended_movie.id %}" style="cursor: pointer; text-decoration:none;">		
+						<div class="col-md-3 post-top">
+							<img src="{{ baseUrl }}serverapp/images/movies/{{recommended_movie.id}}.jpg" class="img-responsive" alt="">
+							<h6>{{ recommended_movie.title }}</h6>
+							<p>why we are suggesting</p>
+						</div>
+					</a>
+				{% endfor %}
 				<div class="clearfix"></div>
 			</div>
 		</div>

@@ -38,12 +38,22 @@ def show(request, movie_id):
 	synopsis_path = os.path.join(settings.SYNOPSIS, "{0}".format(movie.id))
 	synopsis = open(synopsis_path).read()
 	movie_ids, important_fields = RecommendationUnit.get_similar_movies(movie, 1, 1, 1, 1, 1, 1)
+	doc_index = {id: movie_ids.index(id) for id in movie_ids[:9]}
 	print "movie_ids: ", movie_ids
 	print "important_fields: ", important_fields
+	movies = models.Movie.objects.filter(id__in=doc_index.keys())[:9]
+	recommended_movies = [0] * len(movies)
+	i = 0
+	for movie in movies:
+		new_index = doc_index[movie.id]
+		# recommended_movies[new_index] = (movie, important_fields[i])
+		recommended_movies[new_index] = movie
+		i += 1
 	content = {
 		"movie": movie,
 		"storyline": storyline,
-		"synopsis": synopsis
+		"synopsis": synopsis,
+		"recommended_movies": recommended_movies[:4]
 	}
 	return render(request, "serverapp/show.html", content)
 
