@@ -11,11 +11,12 @@ h5 {
    cursor: default;
 }
 
-.synopsis p{
-    line-height: 1.5em;
-    height: 3em;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    width: 100%;
+.synopsis {
+   overflow: hidden;
+   text-overflow: ellipsis;
+   display: -webkit-box;
+   line-height: 16px;     /* fallback */
+   max-height: 180px;      /* fallback */
+   -webkit-line-clamp: 6; /* number of lines to show */
+   -webkit-box-orient: vertical;
 }
