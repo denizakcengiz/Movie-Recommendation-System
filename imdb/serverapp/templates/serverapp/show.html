@@ -24,11 +24,11 @@
 			<h4>Related Movies</h4>
 			<div class="single-left ">		
 				{% for recommended_movie in recommended_movies %}	
-					<a href="{% url 'serverapp:show' recommended_movie.id %}" style="cursor: pointer; text-decoration:none;">		
+					<a href="{% url 'serverapp:show' recommended_movie.1 %}" style="cursor: pointer; text-decoration:none;">		
 						<div class="col-md-3 post-top">
-							<img src="{{ baseUrl }}serverapp/images/movies/{{recommended_movie.id}}.jpg" class="img-responsive" alt="">
-							<h6>{{ recommended_movie.title }}</h6>
-							<p>why we are suggesting</p>
+							<img src="{{ baseUrl }}serverapp/images/movies/{{recommended_movie.1}}.jpg" class="img-responsive" alt="">
+							<h6>{{ recommended_movie.0 }}</h6>
+							<p>Suggested for; {{ recommended_movie.2 }}</p>
 						</div>
 					</a>
 				{% endfor %}
