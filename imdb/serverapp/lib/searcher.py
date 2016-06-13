@@ -14,6 +14,7 @@ from org.apache.lucene.search import IndexSearcher
 from org.apache.lucene.store import SimpleFSDirectory
 from org.apache.lucene.util import Version
 
+from django.conf import settings
 
 FIELD_CONTENTS = "contents"
 FIELD_PATH = "name"
@@ -22,7 +23,8 @@ class SearchFiles(object):
 	def __init__(self, query, retrieve_count=5):
 		self.query = query
 		self.retrieve_count = retrieve_count
-		jvm = lucene.initVM(vmargs=['-Djava.awt.headless=true'])
+		jvm = settings.JVM 
+		jvm.attachCurrentThread()
 
 	def search(self, index_dir):
 		# Get handle to index directory

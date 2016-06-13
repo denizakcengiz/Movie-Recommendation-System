@@ -2,6 +2,8 @@
 
 import os
 
+JVM = None
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SYNOPSIS = os.path.abspath(BASE_DIR+"/../../synopsis/")
