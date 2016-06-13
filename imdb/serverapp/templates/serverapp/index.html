@@ -1,4 +1,5 @@
 {% extends "serverapp/layout.html" %}
+{% load imdb_tags %}
 
 {% block content %}
 	{% for movie in movies %}
@@ -33,4 +34,21 @@
 			</div>
 		{% if row == "last" %}</div><div class="clearfix"></div><br>{% endif %}
 	{% endfor %}
+
+	<div class="pagination">
+	    <span class="step-links">
+	    	
+	        {% if movies.has_previous %}
+				<a href="?{% url_replace request 'page' movies.previous_page_number %}">previous</a>
+	        {% endif %}
+
+	        <span class="current">
+	            Page {{ movies.number }} of {{ movies.paginator.num_pages }}.
+	        </span>
+
+	        {% if movies.has_next %}
+	            <a href="?{% url_replace request 'page' movies.next_page_number %}">next</a>
+	        {% endif %}
+	    </span>
+	</div>
 {% endblock %}
