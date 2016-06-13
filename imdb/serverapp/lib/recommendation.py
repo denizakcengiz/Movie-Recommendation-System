@@ -24,20 +24,25 @@ class RecommendationUnit(object):
 
 		sorted_weighted_pairs = sorted(movie_weighted_score_pairs.items(), key=lambda i: float(i[1]), reverse=True)
 		top_5_pairs = sorted_weighted_pairs[:5]
-		top_similar_movie = Movie.objects.get(id=top_5_pairs[0][0])
-		# print('Top similar ' + str(top_similar_movie.id))
-		important_fields = RecommendationUnit.find_important_fields(movie, top_similar_movie, genre_weight=genre_weight, actor_weight=actor_weight, director_weight=director_weight, synopsis_weight=synopsis_weight, storyline_weight=storyline_weight, feedback_weight=feedback_weight)
+		
+		top_5_moveids = [item[0] for item in top_5_pairs]
+		
+		movie_field_pairs = []
+		for m_id in top_5_moveids:
+			second_movie = Movie.objects.get(id=m_id)
+			important_field = RecommendationUnit.find_important_fields(movie, second_movie, genre_weight=genre_weight, actor_weight=actor_weight, director_weight=director_weight, synopsis_weight=synopsis_weight, storyline_weight=storyline_weight, feedback_weight=feedback_weight)	
+			movie_field_pairs.append((second_movie.id, important_field))
 
-		return [movie_id for movie_id, _ in top_5_pairs], important_fields
+		return movie_field_pairs
 		# return top_5_pairs
 
 	@staticmethod
 	def find_weighted_similarity_score(similarity, genre_weight=0, actor_weight=0, \
 		director_weight=0, synopsis_weight=0, storyline_weight=0, feedback_weight=0):
-		genre_score = (similarity.genre * decimal.Decimal(genre_weight)) * decimal.Decimal(0.25)
+		genre_score = (similarity.genre * decimal.Decimal(genre_weight)) * decimal.Decimal(0.1)
 		actor_score = similarity.actor * decimal.Decimal(actor_weight)
 		director_score = similarity.director * decimal.Decimal(director_weight)
-		synopsis_score = (similarity.synopsis * decimal.Decimal(synopsis_weight)) * decimal.Decimal(0.25)
+		synopsis_score = similarity.synopsis * decimal.Decimal(synopsis_weight)
 		storyline_score = similarity.storyline * decimal.Decimal(storyline_weight)
 		feedback_score = decimal.Decimal(similarity.click_percentage) * decimal.Decimal(feedback_weight)
 
@@ -68,6 +73,6 @@ class RecommendationUnit(object):
 		field_scores = {'genre': genre_score, 'actor': actor_score, 'director': director_score, 'synopsis': synopsis_score, 'storyline': storyline_score, 'feedback': feedback_score}
 		sorted_fields = sorted(field_scores.items(), key=lambda i: float(i[1]), reverse=True)
 		# print(sorted_fields)
-		top_3_fields = [sorted_fields[0][0], sorted_fields[1][0], sorted_fields[2][0]]
+		most_important_field = sorted_fields[0][0]
 
-		return top_3_fields
+		return most_important_field
