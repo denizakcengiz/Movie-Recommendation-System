@@ -27,13 +27,15 @@
 <body>
 	<div class="banner">
 		<div class="container_wrap">
+			<a href="{% url 'serverapp:index' %}"><span class="glyphicon glyphicon-home orange left"></span></a>
+			<a href="#" id="contact-button"><span class="glyphicon glyphicon-envelope orange right"></span></a> 		
 			<h1>What are you looking for?</h1>
 			<form action="{% url 'serverapp:search' %}" method="GET">
 				<input type="text" name="keyword" placeholder="type the keyword(s)">
 				<div class="contact_btn">
 				<label class="btn1 btn-2 btn-2g"><input name="submit" type="submit" id="submit" value="Search"></label>
 				</div>
-			</form>        		
+			</form> 
 			<div class="clearfix"></div>
 		</div>
 	</div>
@@ -45,7 +47,7 @@
 		</div>
 	</div>
 
-   <div class="footer">
+   <div class="footer" id="footer">
    	<div class="container">
 	  <div class="footer_grids">
 	     <div class="footer-grid">
@@ -71,3 +73,11 @@
    </div>
 </body>
 </html>		
+
+<script type="text/javascript">
+	$('#contact-button').click(function(){
+	    $('html, body').animate({
+		    scrollTop: $(".footer").offset().top
+		}, 500);
+	})
+</script>

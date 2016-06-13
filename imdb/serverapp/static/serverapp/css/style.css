@@ -1703,9 +1703,8 @@ ul.popular li a:hover{
   color: #bbb;
 }
 .single-bottom  input[type="submit"]{
-	  border: none;
+	border: none;
   font-size: 1.1em;
-  width: 13%;
   margin: 0.5em 0em;
   background:#F19E1F;
   transition: 0.5s all;

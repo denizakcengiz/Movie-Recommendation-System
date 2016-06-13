@@ -2,7 +2,7 @@
 import os 
 
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.views.decorators.http import require_GET, require_POST
 
 from serverapp import models
@@ -42,19 +42,57 @@ def show(request, movie_id):
 	synopsis_path = os.path.join(settings.SYNOPSIS, "{0}".format(movie.id))
 	synopsis = open(synopsis_path).read()
 	recommendations = RecommendationUnit.get_similar_movies(movie, 1, 1, 1, 1, 1, 1)
-	print "recommendations: ", recommendations
+	# print "recommendations: ", recommendations
 	recommended_movies = []
 	for recommendation in recommendations:
 		movie_title = models.Movie.objects.get(id=recommendation[0]).title
 		new_tuple = (movie_title,) + recommendation
 		recommended_movies.append(new_tuple)
-	print "recommended_movies :", recommended_movies
+	# print "recommended_movies :", recommended_movies
 
 	content = {
 		"movie": movie,
 		"storyline": storyline,
 		"synopsis": synopsis,
-		"recommended_movies": recommended_movies[:4]
+		"recommended_movies": recommended_movies[:4],
+		"genre_weight": 1,
+		"actor_weight": 1,
+		"director_weight": 1,
+		"storyline_weight": 1,
+		"synopsis_weight": 1,
+		"feedback_weight": 1,
 	}
 	return render(request, "serverapp/show.html", content)
+
+@require_GET
+def updateRecommendations(request, movie_id):
+	movie = models.Movie.objects.get(pk=movie_id)
+	print request.GET
+	genre_weight = int(request.GET.get("genre"))
+	actor_weight = int(request.GET.get("actors"))
+	director_weight = int(request.GET.get("director"))
+	storyline_weight = int(request.GET.get("storyline"))
+	synopsis_weight = int(request.GET.get("synopsis"))
+	feedback_weight = int(request.GET.get("feedback"))
+
+	recommendations = RecommendationUnit.get_similar_movies(movie, genre_weight, actor_weight, director_weight, synopsis_weight, storyline_weight, feedback_weight)
+	# print "recommendations: ", recommendations
+	recommended_movies = []
+	for recommendation in recommendations:
+		movie_title = models.Movie.objects.get(id=recommendation[0]).title
+		new_tuple = (movie_title,) + recommendation
+		recommended_movies.append(new_tuple)
+	# print "recommended_movies :", recommended_movies
+
+	content = {
+		"movie": movie,
+		"recommended_movies": recommended_movies[:4],
+		"genre_weight": genre_weight,
+		"actor_weight": actor_weight,
+		"director_weight": director_weight,
+		"storyline_weight": storyline_weight,
+		"synopsis_weight": synopsis_weight,
+		"feedback_weight": feedback_weight,
+	}
+	return render_to_response('serverapp/recommendation.html', content)
 

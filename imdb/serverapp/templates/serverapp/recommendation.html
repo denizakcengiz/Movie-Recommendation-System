@@ -1,0 +1,105 @@
+<div class=" single-profile">
+	<h4>Related Movies</h4>
+	<div class="single-left ">		
+		{% for recommended_movie in recommended_movies %}	
+			<a href="{% url 'serverapp:show' recommended_movie.1 %}" style="cursor: pointer; text-decoration:none;">		
+				<div class="col-md-3 post-top">
+					<img src="/static/serverapp/images/movies/{{recommended_movie.1}}.jpg" class="img-responsive" alt="">
+					<h6>{{ recommended_movie.0 }}</h6>
+					<p>Suggested for; {{ recommended_movie.2 }}</p>
+				</div>
+			</a>
+		{% endfor %}
+		<div class="clearfix"></div>
+	</div>
+</div>
+<div class="single-bottom">
+	<h3>Recommend according to ... </h3>
+		<form id="recommendation-form" method="GET">	
+			<div class="col-md-6 comment">
+				<div class="form-inline">
+					<div class="form-group">
+						<label>Genre</label>
+						<input name="genre" type="range" min="0" max="2" class="range-input" value="{{ genre_weight }}">
+						<label class="range-text">Medium</label>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 comment">
+				<div class="form-inline">
+					<div class="form-group">
+						<label>Actors</label>
+						<input name="actors" type="range" min="0" max="2" class="range-input" value="{{ actor_weight }}">
+						<label class="range-text">Medium</label>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 comment">
+				<div class="form-inline">
+					<div class="form-group">
+						<label>Director</label>
+						<input name="director" type="range" min="0" max="2" class="range-input" value="{{ director_weight }}">
+						<label class="range-text">Medium</label>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 comment">
+				<div class="form-inline">
+					<div class="form-group">
+						<label>Storyline</label>
+						<input name="storyline" type="range" min="0" max="2" class="range-input" value="{{ storyline_weight }}">
+						<label class="range-text">Medium</label>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 comment">
+				<div class="form-inline">
+					<div class="form-group">
+						<label>Synopsis</label>
+						<input name="synopsis" type="range" min="0" max="2" class="range-input" value="{{ synopsis_weight }}">
+						<label class="range-text">Medium</label>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 comment">
+				<div class="form-inline">
+					<div class="form-group">
+						<label>Feedback</label>
+						<input name="feedback" type="range" min="0" max="2" class="range-input" value="{{ feedback_weight }}">
+						<label class="range-text">Medium</label>
+					</div>
+				</div>
+			</div>
+			<div class="clearfix"></div>	
+			<input type="submit" value="Recommend" onclick="updateRecommendations('{% url 'serverapp:update_recommendation' movie.id %}'); return false;">		
+		</form>
+</div>
+
+<script type="text/javascript">
+	$("#recommendation-form").submit(function(e) {
+		  e.preventDefault();
+	});
+	function updateRecommendations(url) {
+		$.ajax({
+			url: url,
+			type: "GET",
+			data: $("#recommendation-form").serialize(),
+			success: function(content) {
+				$("#recommendation-container").html(content);
+			},
+			error: function(xhr, errmsg, err) {
+				window.console.log("AJAX Error" + xhr.status + ": " + xhr.responseText);
+			}
+		});
+		return false;
+	}
+	$('.range-input').on('change', function () {
+		var value = $(this).val();
+		var text = "Medium";
+		if (value == 0)
+			text = "Low";
+		else if (value == 2)
+			text = "High";
+		$($(this).next()).text(text);
+    });
+</script>
