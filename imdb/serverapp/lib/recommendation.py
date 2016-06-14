@@ -19,7 +19,7 @@ class RecommendationUnit(object):
 			if not similarity:
 				similarity = Similarities.objects.get(first_movie=second_id, second_movie=movie.id)
 
-			weighted_score = RecommendationUnit.find_weighted_similarity_score(similarity, genre_weight=genre_weight, actor_weight=actor_weight, director_weight=director_weight, synopsis_weight=synopsis_weight, storyline_weight=storyline_weight, feedback_weight=feedback_weight)
+			weighted_score = RecommendationUnit.find_weighted_similarity_score(similarity, genre_weight=genre_weight, actor_weight=actor_weight, director_weight=director_weight/2, synopsis_weight=synopsis_weight, storyline_weight=storyline_weight, feedback_weight=feedback_weight)
 			movie_weighted_score_pairs[second_id] = weighted_score
 
 		sorted_weighted_pairs = sorted(movie_weighted_score_pairs.items(), key=lambda i: float(i[1]), reverse=True)
@@ -30,7 +30,7 @@ class RecommendationUnit(object):
 		movie_field_pairs = []
 		for m_id in top_5_moveids:
 			second_movie = Movie.objects.get(id=m_id)
-			important_field = RecommendationUnit.find_important_fields(movie, second_movie, genre_weight=genre_weight, actor_weight=actor_weight, director_weight=director_weight, synopsis_weight=synopsis_weight, storyline_weight=storyline_weight, feedback_weight=feedback_weight)	
+			important_field = RecommendationUnit.find_important_fields(movie, second_movie, genre_weight=genre_weight, actor_weight=actor_weight, director_weight=director_weight/2, synopsis_weight=synopsis_weight, storyline_weight=storyline_weight, feedback_weight=feedback_weight)	
 			movie_field_pairs.append((second_movie.id, important_field))
 
 		return movie_field_pairs

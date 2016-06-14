@@ -22,7 +22,7 @@ FIELD_PATH = "name"
 
 class DocSimilarity(object):
     def __init__(self):
-        lucene.initVM(vmargs=['-Djava.awt.headless=true'])
+        # lucene.initVM(vmargs=['-Djava.awt.headless=true'])
         self.boolean_query = BooleanQuery()
         self.similarityOfSynopsis()
         self.similarityOfStoryLine()

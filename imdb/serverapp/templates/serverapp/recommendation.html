@@ -86,6 +86,15 @@
 			data: $("#recommendation-form").serialize(),
 			success: function(content) {
 				$("#recommendation-container").html(content);
+				$(".range-input").each(function() {
+					var value = $(this).val();
+					var text = "Medium";
+					if (value == 0)
+						text = "Low";
+					else if (value == 2)
+						text = "High";
+					$($(this).next()).text(text);
+				});
 			},
 			error: function(xhr, errmsg, err) {
 				window.console.log("AJAX Error" + xhr.status + ": " + xhr.responseText);

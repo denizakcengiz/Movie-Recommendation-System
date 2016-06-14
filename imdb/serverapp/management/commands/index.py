@@ -7,7 +7,7 @@ from django.core.management.base import BaseCommand
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-		lucene.initVM(vmargs=['-Djava.awt.headless=true'])
+		# lucene.initVM(vmargs=['-Djava.awt.headless=true'])
 		IndexFiles(settings.STORYLINE, settings.STORYLINE_INDEX)
 		IndexFiles(settings.SYNOPSIS, settings.SYNOPSIS_INDEX)
 

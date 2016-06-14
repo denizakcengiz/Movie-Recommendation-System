@@ -18,16 +18,17 @@ def callback_args(f):
 
 class ImdbSpider(scrapy.Spider):
 	name = 'imdb'
-	start_urls = ['http://www.imdb.com/chart/top?ref_=ft_250']
+	start_urls = ['http://www.imdb.com/search/title?genres=comedy&sort=moviemeter,asc&start=401&title_type=feature']
 	
 	def parse(self, response):
-		print "yeeeeey"
-		print "yeeeeey"
-		print "yeeeeey"
-		print "yeeeeey"
-		for href in response.css('.titleColumn a::attr(href)'):
+		for href in response.css('.image a::attr(href)'):
+			# print href
 			full_url = response.urljoin(href.extract())
-			yield scrapy.Request(full_url, callback=self.parse_movie)
+			# print full_url
+			if not full_url.startswith("?genres"):
+				yield scrapy.Request(full_url, callback=self.parse_movie)
+			else:
+				print "genres"
 		
 	def parse_movie(self, response):
 		sel = scrapy.Selector(response)
@@ -35,7 +36,6 @@ class ImdbSpider(scrapy.Spider):
 			with transaction.atomic():
 				crawled_director = response.css('.credit_summary_item span[itemprop=director] a span::text').extract()[0]
 				director, created = models.Director.objects.get_or_create(name=crawled_director)
-
 				crawled_title = response.css('h1::text').extract()[0].replace('\u00a0','')
 				crawled_year = response.css('#titleYear a::text').extract()[0]
 				crawled_rating = response.css('.ratingValue span[itemprop=ratingValue]::text').extract()[0]
@@ -45,7 +45,6 @@ class ImdbSpider(scrapy.Spider):
 					rating=crawled_rating,
 					director=director
 				)
-
 				if movie_created:
 					crawled_genres = response.css('span[itemprop=genre]::text').extract()
 					for crawled_genre in crawled_genres:

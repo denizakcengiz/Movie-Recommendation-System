@@ -37,10 +37,16 @@ def search(request):
 @require_GET
 def show(request, movie_id):
 	movie = models.Movie.objects.get(pk=movie_id)
-	storyline_path = os.path.join(settings.STORYLINE, "{0}".format(movie.id))
-	storyline = open(storyline_path).read()
-	synopsis_path = os.path.join(settings.SYNOPSIS, "{0}".format(movie.id))
-	synopsis = open(synopsis_path).read()
+	try:
+		storyline_path = os.path.join(settings.STORYLINE, "{0}".format(movie.id))
+		storyline = open(storyline_path).read()
+	except Exception as e:
+		storyline = ""
+	try:
+		synopsis_path = os.path.join(settings.SYNOPSIS, "{0}".format(movie.id))
+		synopsis = open(synopsis_path).read()
+	except Exception as e:
+		synopsis = ""
 	recommendations = RecommendationUnit.get_similar_movies(movie, 1, 1, 1, 1, 1, 1)
 	# print "recommendations: ", recommendations
 	recommended_movies = []
