@@ -34,7 +34,6 @@ class RecommendationUnit(object):
 			movie_field_pairs.append((second_movie.id, important_field))
 
 		return movie_field_pairs
-		# return top_5_pairs
 
 	@staticmethod
 	def find_weighted_similarity_score(similarity, genre_weight=0, actor_weight=0, \
@@ -45,16 +44,6 @@ class RecommendationUnit(object):
 		synopsis_score = similarity.synopsis * decimal.Decimal(synopsis_weight)
 		storyline_score = similarity.storyline * decimal.Decimal(storyline_weight)
 		feedback_score = decimal.Decimal(similarity.click_percentage) * decimal.Decimal(feedback_weight)
-
-		'''
-		field_scores = {'genre': genre_score, 'actor': actor_score, 'director': director_score, 'synopsis': synopsis_score, 'storyline': storyline_score, 'feedback': feedback_score}
-		weighted_score = sum(field_scores.values())
-
-		sorted_fields = sorted(field_scores.items(), key=lambda i: float(i[1]), reverse=True)
-		print(sorted_fields)
-		top_3_fields = [sorted_fields[0][0], sorted_fields[1][0], sorted_fields[2][0]]
-		'''
-		# return weighted_score, top_3_fields
 		
 		return genre_score + actor_score + director_score + synopsis_score + storyline_score + feedback_score
 
